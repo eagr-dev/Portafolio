@@ -1,343 +1,598 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edgar Garcia | Desarrollador Backend .NET</title>
+<meta name="description" content="Desarrollador Backend .NET en Jalisco, México. APIs REST con Clean Architecture, Redis, Docker y Oracle Cloud.">
+<meta property="og:title" content="Edgar Garcia | Desarrollador Backend .NET">
+<meta property="og:description" content="APIs REST con C# y .NET, Clean Architecture, Redis, Docker y Oracle Cloud. Proyectos desplegados y código en GitHub.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #090d12;
+    --surface: #161b22;
+    --surface-header: #0d1117;
+    --accent: #3fb950;
+    --accent-blue: #58a6ff;
+    --accent-dim: rgba(63, 185, 80, 0.1);
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --border: #30363d;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 32px 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* ── Contenedor Terminal ── */
+  .terminal-window {
+    width: 100%;
+    max-width: 900px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    background: var(--surface-header);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dots {
+    display: flex;
+    gap: 7px;
+  }
+
+  .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+  .dot-red { background: #ff5f56; }
+  .dot-yellow { background: #ffbd2e; }
+  .dot-green { background: #27c93f; }
+
+  .terminal-title {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  .page {
+    padding: 36px 40px;
+  }
+
+  /* ── Header ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 28px;
+    margin-bottom: 32px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .name-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .prompt-prefix {
+    font-family: var(--mono);
+    color: var(--accent);
+    margin-right: 6px;
+  }
+
+  .name {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+  }
+
+  .role {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent-blue);
+  }
+
+  /* Acciones de Contacto Interactivas */
+  .contact-actions {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 6px;
+    justify-content: end;
+  }
+
+  .action-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text);
+    background: var(--surface-header);
+    border: 1px solid var(--border);
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+    user-select: none;
+  }
+
+  .action-btn:hover {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    background: rgba(88, 166, 255, 0.08);
+  }
+
+  .action-btn.copy-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(63, 185, 80, 0.08);
+  }
+
+  /* ── Layout ── */
+  .body {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+  }
+
+  /* ── Sidebar ── */
+  aside { display: flex; flex-direction: column; gap: 32px; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .skill-group { margin-bottom: 16px; }
+
+  .skill-group-name {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-family: var(--mono);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .tag {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .tag.highlight {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-color: rgba(63, 185, 80, 0.3);
+  }
+
+  .edu-item { margin-bottom: 12px; }
+
+  .edu-school {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .edu-degree {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .edu-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent-blue);
+    margin-top: 2px;
+  }
+
+  /* ── Main ── */
+  main { display: flex; flex-direction: column; gap: 32px; }
+
+  /* ── Perfil ── */
+  .perfil-text {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #c9d1d9;
+  }
+
+  /* ── Proyectos ── */
+  .projects { display: flex; flex-direction: column; gap: 24px; }
+
+  .project {
+    background: var(--surface-header);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .project:hover {
+    border-color: #444c56;
+  }
+
+  .project-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    gap: 12px;
+  }
+
+  .project-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .status-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .status-badge.live {
+    color: var(--accent);
+    background: rgba(63, 185, 80, 0.1);
+    border-color: rgba(63, 185, 80, 0.3);
+  }
+
+  .status-badge.dev {
+    color: #e3b341;
+    background: rgba(227, 179, 65, 0.1);
+    border-color: rgba(227, 179, 65, 0.3);
+  }
+
+  .status-badge.store {
+    color: var(--accent-blue);
+    background: rgba(88, 166, 255, 0.1);
+    border-color: rgba(88, 166, 255, 0.3);
+  }
+
+  .project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .link-btn {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--accent-blue);
+    text-decoration: none;
+    border: 1px solid rgba(88, 166, 255, 0.3);
+    background: rgba(88, 166, 255, 0.05);
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+
+  .link-btn:hover {
+    background: rgba(88, 166, 255, 0.18);
+    border-color: var(--accent-blue);
+  }
+
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 12px;
+  }
+
+  .stack-item {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+
+  .bullets { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+  .bullets li {
+    font-size: 12.5px;
+    color: #c9d1d9;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .bullets li::before {
+    content: '❯';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 10px;
+    top: 2px;
+  }
+
+  code { font-family: var(--mono); font-size: 11.5px; background: var(--bg); border: 1px solid var(--border); padding: 0 4px; border-radius: 3px; }
+  .bullets a { color: var(--accent-blue); text-decoration: none; }
+  .bullets a:hover { text-decoration: underline; }
+
+  @media print {
+    body { background: white; color: #111; padding: 0; }
+    .terminal-window { border: none; box-shadow: none; max-width: 100%; background: white; }
+    .terminal-bar { display: none; }
+    .page { padding: 0; }
+    :root {
+      --bg: #fff; --surface: #fff; --surface-header: #fff;
+      --accent: #1b7c3d; --accent-blue: #0969da;
+      --text: #111; --text-muted: #555; --border: #ccc;
+    }
+    .project { background: #fafafa; border-color: #e1e4e8; }
+    .tag, .stack-item { background: #f3f4f6; color: #222; }
+  }
+
+  @media (max-width: 680px) {
+    .page { padding: 20px 16px; }
+    .body { grid-template-columns: 1fr; }
+    header { grid-template-columns: 1fr; }
+    .contact-actions { justify-content: start; }
+  }
+</style>
 </head>
 <body>
 
-<div class="Arriba">
-    <div class="Titulo">
-        <h1>Bienvenidos a mi Portafolio :D</h1>
+<div class="terminal-window">
+  
+  <div class="terminal-bar">
+    <div class="dots">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
     </div>
+    <div class="terminal-title">edgar@backend-dev:~ (bash)</div>
+    <div style="width: 40px;"></div>
+  </div>
 
-    <div class="Lenguajes">
-            <H2>¿Qué lenguasjes e usado?</H2>
+  <div class="page">
 
-            <table>
-                <tr>
-                    <td><img src="/imagenes/C++.png" alt="C++" ></td>
-                    <td style="text-align: center;"><img src="/imagenes/python.webp" alt="Python"></td>
-                    <td style="text-align: right;"><img src="/imagenes/GDscript.png" alt="GDscript"></td>
-                </tr>
-                <tr>
-                    <th style="text-align: justify;">C++</th>
-                    <th style="text-align: center;">Python</th>
-                    <th style="text-align: right;">GDscript</th>
-                </tr>
-            </table>
+    <!-- Header -->
+    <header>
+      <div class="name-container">
+        <div class="name"><span class="prompt-prefix">~/</span>Edgar Alexis Garcia Ruiz</div>
+        <div class="role"><span class="prompt-prefix">$</span>Desarrollador Backend .NET · Jalisco, México</div>
+      </div>
 
+      <div class="contact-actions">
+        <a href="https://www.linkedin.com/in/edgar-alexis-garcia-ruiz-a9199143b/" target="_blank" rel="noopener" class="action-btn">💼 LinkedIn</a>
+        <a href="https://github.com/eagr-dev" target="_blank" rel="noopener" class="action-btn">🐙 GitHub</a>
+        <a href="https://wa.me/523312566287" target="_blank" rel="noopener" class="action-btn">💬 WhatsApp</a>
+        <a href="mailto:edgaralexisgarciaruizcontacto@gmail.com" class="action-btn">📧 Correo</a>
+      </div>
+    </header>
+
+    <div class="body">
+
+      <!-- Sidebar -->
+      <aside>
+
+        <div>
+          <div class="section-label"><span>❯</span> Habilidades</div>
+
+          <div class="skill-group">
+            <div class="skill-group-name">Lenguajes</div>
+            <div class="tags">
+              <span class="tag highlight">C#</span>
+              <span class="tag highlight">SQL</span>
+              <span class="tag">C++</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-name">Backend</div>
+            <div class="tags">
+              <span class="tag highlight">.NET / ASP.NET</span>
+              <span class="tag highlight">EF Core</span>
+              <span class="tag">Clean Architecture</span>
+              <span class="tag">CQRS · MediatR</span>
+              <span class="tag">REST · JWT</span>
+              <span class="tag">Redis</span>
+              <span class="tag">MySQL</span>
+            </div>
+          </div>
+
+          <div class="skill-group">
+            <div class="skill-group-name">Infraestructura</div>
+            <div class="tags">
+              <span class="tag highlight">Docker</span>
+              <span class="tag">Docker Compose</span>
+              <span class="tag">Linux</span>
+              <span class="tag">Oracle Cloud (OCI)</span>
+              <span class="tag">Cloudflare</span>
+              <span class="tag">Git / GitHub</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label"><span>❯</span> Educación</div>
+          <div class="edu-item">
+            <div class="edu-school">Centro Universitario UTEG</div>
+            <div class="edu-degree">Ingeniería en Mecatrónica</div>
+            <div class="edu-meta">En curso · Egreso: Diciembre 2027</div>
+          </div>
+          <div class="edu-item" style="margin-top: 14px;">
+            <div class="edu-school">CONALEP Guadalajara 2</div>
+            <div class="edu-degree">Técnico en Informática</div>
+            <div class="edu-meta">Certificado</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label"><span>❯</span> Idiomas</div>
+          <div class="skill-group-name" style="margin-bottom:2px;">Español</div>
+          <div style="font-size:11.5px; color:var(--text-muted);">Nativo</div>
+          <br>
+          <div class="skill-group-name" style="margin-bottom:2px;">Inglés</div>
+          <div style="font-size:11.5px; color:var(--text-muted);">Técnico · documentación y código</div>
+        </div>
+
+      </aside>
+
+      <!-- Main Content -->
+      <main>
+
+        <section>
+          <div class="section-label"><span>❯</span> Perfil</div>
+          <p class="perfil-text">
+            Desarrollador backend enfocado en <strong>C# y .NET</strong>. Construyo APIs RESTful de punta a punta: diseño con <strong>Clean Architecture y CQRS</strong>, persistencia con EF Core y MySQL, autenticación con JWT, sesiones en <strong>Redis</strong> y despliegue con <strong>Docker sobre Linux en Oracle Cloud</strong>. Mis proyectos abordan problemas de seguridad, concurrencia e integración con servicios externos, y todo el código está en GitHub. Estudio Ingeniería en Mecatrónica y busco integrarme a un equipo de desarrollo donde seguir creciendo con buenas prácticas y código de calidad.
+          </p>
+        </section>
+
+        <section>
+          <div class="section-label"><span>❯</span> Proyectos Destacados</div>
+          <div class="projects">
+
+            <div class="project">
+              <div class="project-header">
+                <span class="project-name">Password Manager API — Arquitectura Zero-Knowledge</span>
+                <span class="status-badge live">● Desplegado en Nube</span>
+              </div>
+              <div class="project-links">
+                <a href="https://passwordmanagerapp.site/" target="_blank" rel="noopener" class="link-btn">Sitio Web ↗</a>
+                <a href="https://github.com/eagr-dev/PasswordManager" target="_blank" rel="noopener" class="link-btn">GitHub ↗</a>
+              </div>
+              <div class="project-stack">
+                <span class="stack-item">C# · .NET 10</span>
+                <span class="stack-item">Clean Architecture</span>
+                <span class="stack-item">AES-256-GCM</span>
+                <span class="stack-item">Redis</span>
+                <span class="stack-item">MySQL</span>
+                <span class="stack-item">Docker</span>
+                <span class="stack-item">Oracle Cloud (OCI)</span>
+                <span class="stack-item">Cloudflare</span>
+              </div>
+              <ul class="bullets">
+                <li>API REST donde el servidor nunca ve las credenciales en claro: el cifrado con AES-256-GCM ocurre en el cliente y la API solo almacena datos cifrados.</li>
+                <li>Sesiones efímeras y rotación de refresh tokens en Redis, con expiración automática por TTL.</li>
+                <li>Middleware de tarpit asíncrono que retrasa las respuestas ante intentos fallidos para frenar fuerza bruta, e idempotencia con UUIDs para descartar peticiones duplicadas.</li>
+                <li>Proyecto organizado en 4 capas (Clean Architecture), contenerizado y desplegado en Oracle Cloud detrás de Cloudflare.</li>
+              </ul>
+            </div>
+
+            <div class="project">
+              <div class="project-header">
+                <span class="project-name">Sistema de Reservas — Volta Vida (Spa)</span>
+                <span class="status-badge store">✓ API completa</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/eagr-dev/BakendSpa" target="_blank" rel="noopener" class="link-btn">GitHub ↗</a>
+              </div>
+              <div class="project-stack">
+                <span class="stack-item">C# · .NET 10</span>
+                <span class="stack-item">Clean Architecture</span>
+                <span class="stack-item">CQRS · MediatR</span>
+                <span class="stack-item">EF Core</span>
+                <span class="stack-item">MySQL</span>
+                <span class="stack-item">Mercado Pago</span>
+                <span class="stack-item">Twilio</span>
+                <span class="stack-item">Docker</span>
+              </div>
+              <ul class="bullets">
+                <li>API para agendar citas y cobrar anticipos de un centro de bienestar, separando comandos y consultas con CQRS y MediatR.</li>
+                <li>Prevención de reservas dobles concurrentes con bloqueo pesimista (<code>FOR UPDATE</code>) en MySQL.</li>
+                <li>Integración con Mercado Pago: webhooks procesados de forma idempotente para que un reintento no duplique el pago.</li>
+                <li>Confirmaciones por WhatsApp (Twilio) y correo SMTP. Solución en Docker, lista para un VPS en Oracle Cloud.</li>
+              </ul>
+            </div>
+
+            <div class="project">
+              <div class="project-header">
+                <span class="project-name">CRD — Compilador y Máquina Virtual de Bytecode en C++</span>
+                <span class="status-badge dev">⚡ Proyecto de fundamentos</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/eagr-dev/Lenguaje_Numeros/tree/bucles" target="_blank" rel="noopener" class="link-btn">GitHub ↗</a>
+              </div>
+              <div class="project-stack">
+                <span class="stack-item">C++ (MSVC x64)</span>
+                <span class="stack-item">Bytecode VM</span>
+                <span class="stack-item">Boost.Multiprecision</span>
+                <span class="stack-item">Shunting Yard</span>
+              </div>
+              <ul class="bullets">
+                <li>Lenguaje de propósito numérico con analizador léxico, semántico y tipado estático y dinámico (<code>int</code>, <code>decimal</code>, <code>bool</code>, <code>dynamic</code>).</li>
+                <li>Evaluación de expresiones con Shunting Yard y precisión arbitraria (<code>Boost.Multiprecision</code>) para evitar errores de punto flotante.</li>
+                <li>Formato binario de bytecode (<code>.crb</code>) con OpCodes de 64 bits, máquina virtual con tabla de símbolos, Memory Pool y recolector de basura propios.</li>
+              </ul>
+            </div>
+
+          </div>
+        </section>
+
+        <section>
+          <div class="section-label"><span>❯</span> Otros Proyectos</div>
+          <ul class="bullets">
+            <li><strong>Discord Music Bot</strong> (C#, Discord.Net, Lavalink v4, Docker Compose): servicio asíncrono orientado a eventos para audio en tiempo real, con la lógica del bot desacoplada de la infraestructura de audio. <a href="https://github.com/Nezthezia/DiscordBot/tree/Jadelka" target="_blank" rel="noopener">GitHub ↗</a></li>
+            <li><strong>Supermarket Run</strong> (Unity, C#): videojuego móvil publicado en Google Play en 3 idiomas, con guardado local y en la nube (Play Games Services). <a href="https://play.google.com/store/apps/details?id=com.Nexthezia.SupermarkertRun&pcampaignid=web_share" target="_blank" rel="noopener">Play Store ↗</a> · <a href="https://github.com/eagr-dev/Supermarker_Run" target="_blank" rel="noopener">GitHub ↗</a></li>
+          </ul>
+        </section>
+
+      </main>
     </div>
-    <div class="Contenido-Titulo">
-        <h2>Proyectos</h2>
-    </div>
+  </div>
 </div>
 
-    <div class="SubDivisiones">
-        <h2>Personales</h2>
-        <hr>
-    </div>
-
-    <div class="todos-proyectos-personales">
-
-        <div class="proyectos">
-            <section class="titulo">
-                <h2>DETECTAR TECLAS</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Este proyecto se trata de un proyecto usando winapi con C++ para detectar ciertas
-                    las teclas presionadas que se mandan en el sistema se hacen rojas, ademas del mouse
-                    ideal para un video o nose detectar teclas funcionales.
-                </p>
-            </section>
-            <hr>
-            <button><a href="https://github.com/Gatoprogramador888/detectar_teclas">Presione aqui</a></button>
-        </div>
-    
-        <div class="proyectos">
-            <section class="titulo">
-                <h2>CMD ENGINE</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Este proyecto trata de un programa usando C++ con winapi y era escribir codigo de c++
-                    para hacer juegos usando cmd, este tiene un sistema de compilacion que solo compila
-                    pero si hay un error no se muestra, esto sera solucionado en proximas actualizaciones
-                    ademas de usar otras api como QT.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/Gatoprogramador888/Cmd-Engine">Presione aqui</a></button>
-            </section>
-        </div>
-
-        <div class="proyectos">
-            <section class="titulo">
-                <h2>FLAPPY BIRD</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Un juego de flappy uno de los primeros juegos que cree para usarlos en cmd como
-                    propio reto, usando visual studio code tiene un sistema de archivos y de record.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/Gatoprogramador888/flappy">Presione aqui</a></button>
-            </section>
-        </div>
-
-    </div>
-
-    <div class="todos-proyectos-personales">
-
-        <div class="proyectos">
-            <section class="titulo">
-                <h2>LIBRERIA CMD</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Estas librerias se usan para hacer juegos usando el cmd de windows
-                    cada una tiene su propia funcionalidad y todo esta en español 
-                    estas librerias estan creadas con c++, si no son convertidas en una libreria
-                    aun no sabia como hacerlo.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/Gatoprogramador888/librerias-para-mis-juegos-cmd">Presione aqui</a></button>
-            </section>
-        </div>
-
-        <div class="proyectos">
-            <section class="titulo">
-                <h2>PRUEBA INTERPRETE</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Prueba de hacer un interprete para hacer un lenguaje se programacion
-                    aunque el proyecto se volvio ilegible y lleno de desbordes de memoria
-                    esta asienta bases para crear un mini lenguaje de programacion.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/Gatoprogramador888/C-pruebainterpretes">Presione aqui</a></button>
-            </section>
-        </div>
-
-        <div class="proyectos">
-            <section class="titulo">
-                <h2>VISUAL GAMES</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Una carpeta llena de juegos para jugar usando el cmd estan sus proyectos y sus
-                    ejecutables, algunos codigos son pruebas y otros son practicas.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/Gatoprogramador888/C-visualGames">Presione aqui</a></button>
-            </section>
-        </div>
-
-    </div>
-
-    <div class="todos-proyectos-personales">
-
-        <div class="proyectos">
-            <section class="titulo">
-                <h2>LENGUAJE NUMEROS</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Uno de los proyectos que sera bastante largo en tema de tiempo, codigo y
-                    organizacion este lenguaje de numeros sera un proyecto que sera tipo java 
-                    compilado e interpretado, tiene una documentacion, donde se dice como usar
-                    tambien los errores y actualizaciones proximamente seguira actualizandose.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/Gatoprogramador888/Lenguaje_Numeros">Presione aqui</a></button>
-            </section>
-        </div>
-
-        <div class="proyectos">
-            <section class="titulo">
-                <h2>C++ Visual</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Carpeta llena de pruebas de todo tipo, carpeta cuando deje de usar DevC++
-                    para usar visual studio code el cual cuyo editor use con C++ hasta que 
-                    empece a usar Visual studio 2019.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/Gatoprogramador888/C-visual">Presione aqui</a></button>
-            </section>
-        </div>
-
-        <div class="proyectos">
-            <section class="titulo">
-                <h2>VISUAL VENTANA</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Carpeta llena de pruebas de winapi usando c++ en esta carpeta
-                    uso winapi y empiezo a investigarlo entrando mas al mundo de interfaces 
-                    graficas aunque sea para windows pero viendo varias de sus limitaciones
-                    estoy pensando usar QT para hacer proyectos multiplataforma.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/Gatoprogramador888/C-visualventana">Presione aqui</a></button>
-            </section>
-        </div>
-
-    </div>
-
-    <div class="SubDivisiones">
-        <h2>Grupales</h2>
-        <hr>
-    </div>
-
-    <div class="todos-proyectos-grupales">
-
-        <div class="proyectosg">
-            <section class="titulo">
-                <h2>UN JUEGO EN GODOT</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Este es el primer proyecto que hice en godot es un juego estilo a los de 
-                    mayatori con otros para celular, aunque salio mal esto me da una idea de como
-                    funciona godot y como podemos solucionar bugs algo complicado al principio
-                    pero despues entiendes como funcionan y el porque, usamos GDscript.
-                    Colaboracion con THEJADELKAFP.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/Gatoprogramador888/Juego-Barcos-java-mobile">Presione aqui</a></button>
-            </section>
-        </div>
-
-        <div class="proyectosg">
-            <section class="titulo">
-                <h2>EDITOR CODIGO</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Un proyecto donde intentamos hacer un entorno de edicion no lo terminamos pero
-                    siembra las bases de hacer proyectos mas a futuros y tratar de completarlos unidos
-                    acomodando las tareas.
-                    Colaboracion con THEJADELKAFP.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/THEJADELKAFP/proyecto">Presione aqui</a></button>
-            </section>
-        </div>
-
-        <div class="proyectosg">
-            <section class="titulo">
-                <h2>LENGUAJE JFK</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    En este proyecto grupal tratamos de hacer un lenguaje de programacion usando 
-                    python se trato hacer un interprete pero debido a la falta de experiencia no
-                    se logro el cometido, era una manera de crear un propio lenguaje para aprender
-                    a hacer uno y experimentar.
-                    Colaboracion con THEJADELKAFP.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/THEJADELKAFP/Lenguaje-JFK">Presione aqui</a></button>
-            </section>
-        </div>
-
-    </div>
-
-    <div class="todos-proyectos-grupales">
-
-        <div class="proyectosg">
-            <section class="titulo">
-                <h2>WEB DE ELECCIONES</h2>
-            </section>
-            <hr>
-            <section class="texto">
-                <p>
-                    Un proyecto final de THEJADELKAFP el cual es un sistema de votos, para lograr
-                    conectar el backend con el frontend usamos python con la API de Flask yo hice el
-                    servidor usando una pagina web que hace servidores remotos usando SQL con
-                    phpMyAdmin eh hice la conexion usando python, THEJADELKAFP uso ese python
-                    para mandarlo a la pagina y mandar los votos.
-                    Colaboracion con THEJADELKAFP.
-                </p>
-            </section>
-            <hr>
-            <section>
-                <button><a href="https://github.com/THEJADELKAFP/WEB2C">Presione aqui</a></button>
-            </section>
-        </div>
-
-    </div>
-
-    <div class="Final">
-        <section class="Lenguajes-web">
-            <h2>Lenguajes usados para hacer el proyecto:</h2>
-            <table>
-                <td><img src="/imagenes/html.png" alt="html" style="width: 130px; margin-right: 200px;"></td>
-                <td><img src="/imagenes/css.png" alt="CSS" style="width: 90px;"></td>
-            </table>
-        </section>
-        <hr>
-        <p>
-            Reto creado por THEJADELKAFP.
-            <br>
-            Participante: Gatoprogramador888.
-            <br>
-        </p>
-        <p>
-            Link Portafolio:
-        </p>
-        <button><a href="https://github.com/Gatoprogramador888/Portafolio">IR</a></button>
-        <p>
-            <br>
-            Reglas del proyecto:
-        </p>
-        <button><a href="https://important-driver-469.notion.site/YOU-PROYECT-3HR-43a8a1f87f71484ebf8f30808e28ee2d?pvs=4">IR</a></button>
-        
-        <p>
-            <br>
-            Gracias por Ver.
-        </p>
-
-    </div>
 
 </body>
 </html>
