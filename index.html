@@ -7,6 +7,7 @@
 <meta name="description" content="Desarrollador Backend .NET en Jalisco, México. APIs REST con Clean Architecture, Redis, Docker y Oracle Cloud.">
 <meta property="og:title" content="Edgar Garcia | Desarrollador Backend .NET">
 <meta property="og:description" content="APIs REST con C# y .NET, Clean Architecture, Redis, Docker y Oracle Cloud. Proyectos desplegados y código en GitHub.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d12'/%3E%3Ctext x='16' y='22' font-size='16' font-family='monospace' font-weight='700' text-anchor='middle' fill='%233fb950'%3E%3E_%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -122,10 +123,11 @@
 
   /* Acciones de Contacto Interactivas */
   .contact-actions {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
+    display: flex;
+    flex-wrap: wrap;
     gap: 6px;
-    justify-content: end;
+    justify-content: flex-end;
+    max-width: 320px;
   }
 
   .action-btn {
@@ -152,11 +154,21 @@
     background: rgba(88, 166, 255, 0.08);
   }
 
-  .action-btn.copy-btn:hover {
+  /* Botón Destacado de Descargar CV */
+  .action-btn.cv-btn {
     border-color: var(--accent);
     color: var(--accent);
-    background: rgba(63, 185, 80, 0.08);
+    background: var(--accent-dim);
+    font-weight: 600;
   }
+
+  .action-btn.cv-btn:hover {
+    background: rgba(63, 185, 80, 0.2);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .action-btn .icon { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0; }
 
   /* ── Layout ── */
   .body {
@@ -200,7 +212,7 @@
     background: var(--bg);
     color: var(--text);
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 12px;
     padding: 3px 8px;
     border-radius: 4px;
     border: 1px solid var(--border);
@@ -312,7 +324,7 @@
 
   .link-btn {
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 11.5px;
     color: var(--accent-blue);
     text-decoration: none;
     border: 1px solid rgba(88, 166, 255, 0.3);
@@ -336,7 +348,7 @@
 
   .stack-item {
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 11.5px;
     color: var(--text-muted);
     background: var(--bg);
     border: 1px solid var(--border);
@@ -368,7 +380,24 @@
   .bullets a { color: var(--accent-blue); text-decoration: none; }
   .bullets a:hover { text-decoration: underline; }
 
+  /* ── Whoami ── */
+  .whoami { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; font-family: var(--mono); font-size: 12.5px; line-height: 1.7; }
+  .whoami .cmd { color: var(--accent); margin-right: 6px; }
+  .whoami .out { color: #c9d1d9; margin: 2px 0 12px 14px; }
+  .whoami .out:last-child { margin-bottom: 0; }
+  .cursor { display: inline-block; width: 7px; height: 13px; background: var(--accent); vertical-align: -2px; margin-left: 4px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+
+  /* ── Por qué ── */
+  .bullets li.why { color: var(--text-muted); border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 2px; }
+  .bullets li.why::before { content: '?'; top: 10px; color: var(--accent-blue); }
+  .bullets li.why strong { color: var(--text); font-weight: 600; }
+
   @media print {
+    .icon-git { filter: invert(1); }
+    .perfil-text, .bullets li, .whoami .out { color: #222; }
+    .whoami { background: #fafafa; }
     body { background: white; color: #111; padding: 0; }
     .terminal-window { border: none; box-shadow: none; max-width: 100%; background: white; }
     .terminal-bar { display: none; }
@@ -386,7 +415,7 @@
     .page { padding: 20px 16px; }
     .body { grid-template-columns: 1fr; }
     header { grid-template-columns: 1fr; }
-    .contact-actions { justify-content: start; }
+    .contact-actions { justify-content: start; max-width: 100%; }
   }
 </style>
 </head>
@@ -414,10 +443,11 @@
       </div>
 
       <div class="contact-actions">
-        <a href="https://www.linkedin.com/in/edgar-alexis-garcia-ruiz-a9199143b/" target="_blank" rel="noopener" class="action-btn">💼 LinkedIn</a>
-        <a href="https://github.com/eagr-dev" target="_blank" rel="noopener" class="action-btn">🐙 GitHub</a>
-        <a href="https://wa.me/523312566287" target="_blank" rel="noopener" class="action-btn">💬 WhatsApp</a>
-        <a href="mailto:edgaralexisgarciaruizcontacto@gmail.com" class="action-btn">📧 Correo</a>
+        <a href="CV_Edgar_Garcia_Backend.pdf" download class="action-btn cv-btn">📄 Descargar CV</a>
+        <a href="https://www.linkedin.com/in/edgar-alexis-garcia-ruiz-a9199143b/" target="_blank" rel="noopener" class="action-btn"><img class="icon" src="img/linkIcon.png" alt="" width="16" height="16"> LinkedIn</a>
+        <a href="https://github.com/eagr-dev" target="_blank" rel="noopener" class="action-btn"><img class="icon icon-git" src="img/gitIcon.png" alt="" width="16" height="16"> GitHub</a>
+        <a href="https://wa.me/523312566287" target="_blank" rel="noopener" class="action-btn"><img class="icon" src="img/wasapIcon.png" alt="" width="16" height="16"> WhatsApp</a>
+        <a href="mailto:edgaralexisgarciaruizcontacto@gmail.com" class="action-btn"><img class="icon" src="img/GmailIcon.png" alt="" width="16" height="16"> Correo</a>
       </div>
     </header>
 
@@ -439,13 +469,14 @@
           </div>
 
           <div class="skill-group">
-            <div class="skill-group-name">Backend</div>
+            <div class="skill-group-name">Backend & Pruebas</div>
             <div class="tags">
               <span class="tag highlight">.NET / ASP.NET</span>
               <span class="tag highlight">EF Core</span>
               <span class="tag">Clean Architecture</span>
               <span class="tag">CQRS · MediatR</span>
               <span class="tag">REST · JWT</span>
+              <span class="tag highlight">xUnit</span>
               <span class="tag">Redis</span>
               <span class="tag">MySQL</span>
             </div>
@@ -493,9 +524,23 @@
       <main>
 
         <section>
+          <div class="section-label"><span>❯</span> Whoami</div>
+          <div class="whoami">
+            <div><span class="cmd">$</span>whoami</div>
+            <div class="out">Edgar, desarrollador backend junior (C# / .NET) y estudiante de mecatrónica.</div>
+            <div><span class="cmd">$</span>cat historia.txt</div>
+            <div class="out">Empecé con C++ hace unos 4 años y ahí aprendí fundamentos construyendo CRD, un compilador y una máquina virtual con recolector de basura propio. Hace unos 2 años pasé a C#, publiqué un juego en Google Play y de ahí di el salto al backend con ASP.NET.</div>
+            <div><span class="cmd">$</span>cat como_trabajo.txt</div>
+            <div class="out">Soy junior en ASP.NET y lo digo sin rodeos: por eso cada proyecto explica por qué tomé cada decisión, no solo qué tecnología usé. El código completo está en GitHub.</div>
+            <div><span class="cmd">$</span>echo $BUSCO</div>
+            <div class="out">Mi primer equipo de backend, para aprender de código revisado por gente con más experiencia.<span class="cursor"></span></div>
+          </div>
+        </section>
+
+        <section>
           <div class="section-label"><span>❯</span> Perfil</div>
           <p class="perfil-text">
-            Desarrollador backend enfocado en <strong>C# y .NET</strong>. Construyo APIs RESTful de punta a punta: diseño con <strong>Clean Architecture y CQRS</strong>, persistencia con EF Core y MySQL, autenticación con JWT, sesiones en <strong>Redis</strong> y despliegue con <strong>Docker sobre Linux en Oracle Cloud</strong>. Mis proyectos abordan problemas de seguridad, concurrencia e integración con servicios externos, y todo el código está en GitHub. Estudio Ingeniería en Mecatrónica y busco integrarme a un equipo de desarrollo donde seguir creciendo con buenas prácticas y código de calidad.
+            Desarrollador backend enfocado en <strong>C# y .NET</strong>. Construyo APIs RESTful de punta a punta: diseño con <strong>Clean Architecture y CQRS</strong>, persistencia con EF Core y MySQL, autenticación con JWT, sesiones en <strong>Redis</strong> y despliegue con <strong>Docker sobre Linux en Oracle Cloud</strong>. Mis proyectos abordan problemas de seguridad, concurrencia e integración con servicios externos, y todo el código está en GitHub.
           </p>
         </section>
 
@@ -518,6 +563,7 @@
                 <span class="stack-item">AES-256-GCM</span>
                 <span class="stack-item">Redis</span>
                 <span class="stack-item">MySQL</span>
+                <span class="stack-item">xUnit</span>
                 <span class="stack-item">Docker</span>
                 <span class="stack-item">Oracle Cloud (OCI)</span>
                 <span class="stack-item">Cloudflare</span>
@@ -527,6 +573,9 @@
                 <li>Sesiones efímeras y rotación de refresh tokens en Redis, con expiración automática por TTL.</li>
                 <li>Middleware de tarpit asíncrono que retrasa las respuestas ante intentos fallidos para frenar fuerza bruta, e idempotencia con UUIDs para descartar peticiones duplicadas.</li>
                 <li>Proyecto organizado en 4 capas (Clean Architecture), contenerizado y desplegado en Oracle Cloud detrás de Cloudflare.</li>
+                <li class="why"><strong>Por qué zero-knowledge:</strong> el navegador cifra con AES-256-GCM antes de enviar y el servidor solo guarda datos cifrados. Si el usuario pierde su clave, ni yo puedo recuperarlos. Es cifrado reversible, no un hash.</li>
+                <li class="why"><strong>Por qué Redis para sesiones:</strong> cada sesión nace con tiempo de vida, y puedo revocarla o comprobar si sigue activa al instante.</li>
+                <li class="why"><strong>Por qué tarpit y no bloqueo de cuenta:</strong> retrasar las respuestas frena la fuerza bruta sin darle a un atacante la forma de dejar fuera a un usuario legítimo; bloquear cuentas sería abrirme un ataque de denegación de servicio.</li>
               </ul>
             </div>
 
@@ -542,6 +591,7 @@
                 <span class="stack-item">C# · .NET 10</span>
                 <span class="stack-item">Clean Architecture</span>
                 <span class="stack-item">CQRS · MediatR</span>
+                <span class="stack-item">xUnit</span>
                 <span class="stack-item">EF Core</span>
                 <span class="stack-item">MySQL</span>
                 <span class="stack-item">Mercado Pago</span>
@@ -550,9 +600,12 @@
               </div>
               <ul class="bullets">
                 <li>API para agendar citas y cobrar anticipos de un centro de bienestar, separando comandos y consultas con CQRS y MediatR.</li>
+                <li>Pruebas unitarias y de integración desarrolladas con <strong>xUnit</strong> para validar handlers CQRS, controladores de la API y lógica de negocio.</li>
                 <li>Prevención de reservas dobles concurrentes con bloqueo pesimista (<code>FOR UPDATE</code>) en MySQL.</li>
                 <li>Integración con Mercado Pago: webhooks procesados de forma idempotente para que un reintento no duplique el pago.</li>
                 <li>Confirmaciones por WhatsApp (Twilio) y correo SMTP. Solución en Docker, lista para un VPS en Oracle Cloud.</li>
+                <li class="why"><strong>Por qué CQRS:</strong> el sistema es sobre todo lectura (el cliente consulta servicios y horarios antes de reservar), y separar consultas de comandos me permite optimizar cada lado por su cuenta.</li>
+                <li class="why"><strong>Por qué <code>FOR UPDATE</code>:</strong> dentro de una transacción bloquea las filas consultadas. Si dos personas piden el mismo horario, la segunda espera; cuando entra, ya lo ve ocupado y sale sin reservar.</li>
               </ul>
             </div>
 
@@ -592,7 +645,6 @@
     </div>
   </div>
 </div>
-
 
 </body>
 </html>
